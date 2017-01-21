@@ -183,7 +183,7 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
     vector<string> c(size);         // color
     vector<uint32_t> d(size);       // distance
     vector<uint32_t> test(size);    // test for existance
-    vector<int32_t>  p(size);       // predecessor
+    vector<int32_t> p(size);        // predecessor
 
     getGrid();
 
@@ -289,11 +289,11 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
     SDL_Surface *trail;
 
     SDL_Rect src, dest;
-    string monster_bmp = "m32.bmp";
-    string cell_bmp = "c32.bmp";
-    string start_bmp = "s32.bmp";
-    string goal_bmp = "g32.bmp";
-    string trail_bmp = "trail.bmp";
+    string monster_bmp = "./static/m32.bmp";
+    string cell_bmp = "./static/c32.bmp";
+    string start_bmp = "./static/s32.bmp";
+    string goal_bmp = "./static/g32.bmp";
+    string trail_bmp = "./static/trail.bmp";
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) 
     {
