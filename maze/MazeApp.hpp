@@ -14,8 +14,7 @@ namespace MazeApp
 {
     using namespace std;
 
-    class MazeBuilder 
-    {
+    class MazeBuilder {
     friend class MazeSolver;
     friend class MazeDrawer;
 
@@ -23,20 +22,17 @@ namespace MazeApp
         MazeBuilder(uint32_t);
         ~MazeBuilder()=default;
 
-        struct Cell
-        {
+        struct Cell {
             uint32_t row;
             uint32_t col;
         };
 
-        struct Channel
-        {
+        struct Channel {
             Cell src;
             Cell dst;
         };
 
-        struct  Vertex 
-        {
+        struct  Vertex {
             int32_t number; 
             Cell cell;      
         };
@@ -55,8 +51,7 @@ namespace MazeApp
     };
 
 
-    class MazeSolver
-    {
+    class MazeSolver {
     friend class MazeDrawer;
 
     public:
@@ -78,9 +73,7 @@ namespace MazeApp
     };
 
 
-    class MazeDrawer
-    {
-        
+    class MazeDrawer {
     public:
         MazeDrawer(uint32_t, uint32_t);
         ~MazeDrawer()=default;
