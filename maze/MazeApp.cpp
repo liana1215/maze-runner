@@ -12,47 +12,37 @@ MazeBuilder::MazeBuilder(uint32_t dim = 10)
 void
 MazeBuilder::buildMaze()
 {
-    uint32_t m_dim = maze.size();
+    auto m_dim = maze.size();
     uint32_t direction[] = {0, 1, 2, 3};   // {up, right, down, left}
     
-    for (uint32_t r = 0; r < m_dim; r++) 
-        for (uint32_t c = 0; c < m_dim; c++) 
-            for (auto d : direction) 
-            {
-                if (r == 0 && c == 0) 
-                {
+    for (auto r = 0; r < m_dim; r++) 
+        for (auto c = 0; c < m_dim; c++) 
+            for (auto d : direction) {
+                if (r == 0 && c == 0) {
                     maze[r][c].push_back((d == 1 || d == 2));
                 }
-                else if (r == m_dim - 1 && c == m_dim - 1) 
-                {
+                else if (r == m_dim - 1 && c == m_dim - 1) {
                     maze[r][c].push_back((d == 0 || d == 3));
                 }
-                else if (r == 0 && c == m_dim - 1)
-                {
+                else if (r == 0 && c == m_dim - 1) {
                     maze[r][c].push_back((d == 2 || d == 3));
                 }
-                else if (r == m_dim - 1 && c == 0) 
-                {
+                else if (r == m_dim - 1 && c == 0) {
                     maze[r][c].push_back((d == 0 || d == 1));  
                 }
-                else if (r == 0)
-                {
+                else if (r == 0) {
                     maze[r][c].push_back((d == 1 || d == 2 || d == 3));   
                 }
-                else if (c == 0) 
-                {
+                else if (c == 0) {
                     maze[r][c].push_back((d == 0 || d == 1 || d == 2)); 
                 }
-                else if (r == m_dim - 1) 
-                {
+                else if (r == m_dim - 1) {
                     maze[r][c].push_back((d == 0 || d == 1 || d == 3)); 
                 }
-                else if (c == m_dim - 1) 
-                {
+                else if (c == m_dim - 1) {
                     maze[r][c].push_back((d == 0 || d == 2 || d == 3)); 
                 }
-                else 
-                {
+                else {
                     maze[r][c].push_back(1);
                 }
             }
@@ -76,25 +66,22 @@ MazeBuilder::runAldousBroder()
     uint32_t remaining = maze_size * maze_size - 1;
     uint32_t count = 0;
     
-    while (remaining > 0) 
-    {
+    while (remaining > 0) {
         uint32_t n_index = neighbor(gen);
         Cell neighbor_cell;
 
-        while(!checkNeighborExists(r, c, n_index)) 
-        {
+        while(!checkNeighborExists(r, c, n_index)) {
             n_index = neighbor(gen);
         }
         neighbor_cell = getNeighborLocation(r, c, n_index);
 
-        if (!visited[neighbor_cell.row][neighbor_cell.col]) 
-        {
+        if (!visited[neighbor_cell.row][neighbor_cell.col]) {
             Channel channel;
             channel.src.row = r;
             channel.src.col = c;
             channel.dst.row = neighbor_cell.row;
             channel.dst.col = neighbor_cell.col;
-            channels.push_back(channel);                 //add channel to vector of channels
+            channels.push_back(channel);       //add channel to vector of channels
             visited[neighbor_cell.row][neighbor_cell.col] = 1;
             remaining--;
         }
@@ -104,8 +91,7 @@ MazeBuilder::runAldousBroder()
         count++;
     }
     
-    for (int i = 0; i < channels.size(); i++) 
-    {
+    for (auto i = 0; i < channels.size(); i++) {
         cout << channels[i].src.row << "," << channels[i].src.col << " -> "
              << channels[i].dst.row << "," << channels[i].dst.col << endl;
     }
@@ -116,12 +102,11 @@ MazeBuilder::runAldousBroder()
 MazeBuilder::Cell
 MazeBuilder::getNeighborLocation(uint32_t r, uint32_t c, uint32_t index)
 {
-    uint32_t r_n = r;
-    uint32_t c_n = c;
+    auto r_n = r;
+    auto c_n = c;
     Cell n;
 
-    switch (index) 
-    {
+    switch (index) {
         case 0: r_n = r - 1; break;
         case 1: c_n = c + 1; break;
         case 2: r_n = r + 1; break;
@@ -145,8 +130,7 @@ MazeBuilder::getVertex(uint32_t number, vector<vector<MazeBuilder::Vertex>> grap
 {
     for (auto v : graph)
         for (auto d : v) 
-            if (number == d.number) 
-            {
+            if (number == d.number) {
                 return d;
             }
     throw invalid_argument("start vertex not valid"); // vertex not found
@@ -188,8 +172,7 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
     getGrid();
 
     vector<vector<MazeBuilder::Vertex>> graph(size);
-    for (auto c: builder.channels) 
-    {
+    for (auto c: builder.channels) {
         MazeBuilder::Vertex one, two;
         one.cell = c.src;
         one.number = grid[c.src.row][c.src.col];
@@ -203,21 +186,17 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
     }
 
     for (int i = 0; i < graph.size(); i++) 
-        if (i != start_vertex) 
-        {
-            if (test[i]) 
-            {
+        if (i != start_vertex) {
+            if (test[i]) {
                 c[i] = "WHITE";
                 d[i] = 10000;
                 p[i] = -1;
             } 
-            else 
-            {
+            else {
                 c[i] = "BLACK";
             }
         } 
-        else 
-        {
+        else {
             c[i] = "GRAY";
             d[i] = 0;
             p[i] = -1;
@@ -226,34 +205,27 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
     Path start;     //initialize first path
     MazeBuilder::Vertex s;
 
-    try 
-    {
+    try {
         s = builder.getVertex(start_vertex, graph);
     } 
-    catch (const exception& e) 
-    {
+    catch (const exception& e) {
         cout << "ERROR: " << e.what() << endl;
     }
 
     start.p.push(s);            //push vertex number to stack 
     paths.push(start);          //enque path
 
-    while (!paths.empty()) 
-    {
+    while (!paths.empty()) {
         Path u = paths.front();
         MazeBuilder::Vertex check = u.p.top();
 
-        if (check.number == goal) 
-        {
+        if (check.number == goal) {
             path_to_goal = u;
         } 
-        else 
-        {
-            for (int i = 0; i < graph[check.number].size(); i++) 
-            {
+        else {
+            for (int i = 0; i < graph[check.number].size(); i++) {
                 MazeBuilder::Vertex v = graph[check.number][i];
-                if (c[v.number] == "WHITE") 
-                {
+                if (c[v.number] == "WHITE") {
                     Path path_copy = u;
                     path_copy.p.push(v);
                     paths.push(path_copy);
@@ -295,8 +267,7 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
     string goal_bmp = "./static/g32.bmp";
     string trail_bmp = "./static/trail.bmp";
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) 
-    {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cout << "Unable to initialize SDL: " <<  SDL_GetError()
                   << endl;
         return 1;
@@ -324,8 +295,7 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
     vector<uint32_t>types = getCellType(builder, solver, maze_dim * maze_dim);
 
     for (int r = 0; r < maze_dim; r++) 
-        for (int c = 0; c < maze_dim; c++) 
-        {
+        for (int c = 0; c < maze_dim; c++) {
             uint32_t type = types[solver.grid[r][c]];
             src.x = type * bmp_size;
             src.y = 0;
@@ -418,8 +388,7 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
 uint32_t
 MazeDrawer::checkLoad(SDL_Surface* image)
 {
-    if (image == NULL) 
-    {
+    if (image == NULL) {
         cout << "Unable to load bitmap.\n"; 
         return 1;
     }
@@ -433,28 +402,23 @@ MazeDrawer::getCellType(MazeBuilder& builder, MazeSolver& solver, uint32_t n_cel
     // where neighbors [0,1,2,3] (u,r,d,l)
     vector<uint32_t> types(n_cells);
     
-    for (auto c : builder.channels) 
-    {
+    for (auto c : builder.channels) {
         uint32_t cell_s = solver.grid[c.src.row][c.src.col];
         uint32_t cell_d = solver.grid[c.dst.row][c.dst.col];
 
-        if ((c.dst.row == c.src.row) && (c.dst.col == (c.src.col + 1))) 
-        {
+        if ((c.dst.row == c.src.row) && (c.dst.col == (c.src.col + 1))) {
             neighbors[cell_s][1] = 1;
             neighbors[cell_d][3] = 1;
         } 
-        else if ((c.dst.row == c.src.row) && (c.dst.col == (c.src.col - 1))) 
-        {  
+        else if ((c.dst.row == c.src.row) && (c.dst.col == (c.src.col - 1))) {  
             neighbors[cell_s][3] = 1;
             neighbors[cell_d][1] = 1;
         } 
-        else if ((c.dst.col == c.src.col) && (c.dst.row == (c.src.row + 1))) 
-        {
+        else if ((c.dst.col == c.src.col) && (c.dst.row == (c.src.row + 1))) {
             neighbors[cell_s][2] = 1;
             neighbors[cell_d][0] = 1;
         } 
-        else if ((c.dst.col == c.src.col) && (c.dst.row == (c.src.row - 1))) 
-        {
+        else if ((c.dst.col == c.src.col) && (c.dst.row == (c.src.row - 1))) {
             neighbors[cell_s][0] = 1;
             neighbors[cell_d][2] = 1;
         }
@@ -462,7 +426,7 @@ MazeDrawer::getCellType(MazeBuilder& builder, MazeSolver& solver, uint32_t n_cel
 
     for (auto &n : neighbors) 
     {
-        uint32_t i = &n - &neighbors[0];
+        auto i = &n - &neighbors[0];
         if      (n[0]==0 && n[1]==1 && n[2]==1 && n[3]==1) {types[i] = 0;}
         else if (n[0]==1 && n[1]==1 && n[2]==0 && n[3]==1) {types[i] = 1;}
         else if (n[0]==1 && n[1]==0 && n[2]==1 && n[3]==1) {types[i] = 2;}

@@ -4,7 +4,7 @@ using namespace MazeApp;
 
 int main()
 {
-    uint32_t maze_dim = 10;
+    auto maze_dim = 10;
     std::cout << "Input size of maze: ";
     std::cin >> maze_dim;
     MazeBuilder builder = MazeBuilder(maze_dim);
@@ -16,11 +16,11 @@ int main()
     
     MazeSolver::Path solved = solver.solveMazeBFS(builder);
     std::vector<MazeBuilder::Vertex> shortest_path;
-    uint32_t stack_length = solved.p.size();    
+    auto stack_length = solved.p.size();    
     std::cout << std::endl;
     std::cout << "Maze solved: ";
     std::cout << "GOAL: ";
-    for (int i = 0; i < stack_length; i++) { 
+    for (auto i = 0; i < stack_length; i++) { 
         MazeBuilder::Vertex v = solved.p.top(); 
         shortest_path.push_back(v);
         std::cout << v.number << " <-";
