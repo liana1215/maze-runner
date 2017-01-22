@@ -6,8 +6,9 @@ as a maze with one solution, path to goal.
 ---
 
 Usage:
-    $ ./mazeapp 5
-
+```
+$ ./mazeapp 5
+```
 The program takes in one parameter, m, which is used to define the dimension of
 the maze. 
 
