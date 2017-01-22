@@ -60,11 +60,11 @@ MazeBuilder::runAldousBroder()
     
     vector<vector<uint32_t>> visited(maze_size, vector<uint32_t>(maze_size));
         
-    uint32_t r = 0;
-    uint32_t c = 0;
+    auto r = 0;
+    auto c = 0;
     visited[r][c] = 1;
-    uint32_t remaining = maze_size * maze_size - 1;
-    uint32_t count = 0;
+    auto remaining = maze_size * maze_size - 1;
+    auto count = 0;
     
     while (remaining > 0) {
         uint32_t n_index = neighbor(gen);
@@ -144,9 +144,9 @@ MazeSolver::MazeSolver(uint32_t dim = 10)
 void
 MazeSolver::getGrid()
 {
-    uint32_t n = 0;
-    for (int r = 0; r < m_dim; r++) {
-        for (int c = 0; c < m_dim; c++) {
+    auto n = 0;
+    for (auto r = 0; r < m_dim; r++) {
+        for (auto c = 0; c < m_dim; c++) {
             grid[r][c] = n;
             n++;
         }
@@ -160,9 +160,9 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
     Path path_to_goal; // return value
     queue<Path> paths; // queue container
 
-    uint32_t size = m_dim * m_dim;
-    uint32_t start_vertex = 0;      // starting cell
-    uint32_t goal = size-1;         // last cell
+    auto size = m_dim * m_dim;
+    auto start_vertex = 0;      // starting cell
+    auto goal = size-1;         // last cell
 
     vector<string> c(size);         // color
     vector<uint32_t> d(size);       // distance
@@ -185,7 +185,7 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
         graph[two.number].push_back(one);
     }
 
-    for (int i = 0; i < graph.size(); i++) 
+    for (auto i = 0; i < graph.size(); i++) 
         if (i != start_vertex) {
             if (test[i]) {
                 c[i] = "WHITE";
@@ -223,7 +223,7 @@ MazeSolver::solveMazeBFS(MazeBuilder &builder)
             path_to_goal = u;
         } 
         else {
-            for (int i = 0; i < graph[check.number].size(); i++) {
+            for (auto i = 0; i < graph[check.number].size(); i++) {
                 MazeBuilder::Vertex v = graph[check.number][i];
                 if (c[v.number] == "WHITE") {
                     Path path_copy = u;
@@ -251,7 +251,7 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
                      vector<MazeBuilder::Vertex> shortest_path)
 {
     vector<MazeBuilder::Channel> channels = builder.channels;
-    uint32_t maze_dim = solver.m_dim;
+    auto maze_dim = solver.m_dim;
     
     SDL_Surface *screen;
     SDL_Surface *monster;
@@ -294,8 +294,8 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
 
     vector<uint32_t>types = getCellType(builder, solver, maze_dim * maze_dim);
 
-    for (int r = 0; r < maze_dim; r++) 
-        for (int c = 0; c < maze_dim; c++) {
+    for (auto r = 0; r < maze_dim; r++) 
+        for (auto c = 0; c < maze_dim; c++) {
             uint32_t type = types[solver.grid[r][c]];
             src.x = type * bmp_size;
             src.y = 0;
@@ -338,11 +338,11 @@ MazeDrawer::drawMaze(MazeBuilder& builder, MazeSolver& solver,
 
     // Output solution path
     SDL_SetColorKey(trail, SDL_SRCCOLORKEY, colorkey);
-    for (int i = shortest_path.size()-2; i > 0; i--) {
+    for (auto i = shortest_path.size()-2; i > 0; i--) {
         // start from 2nd cell, as 1st cell has monster icon.
         MazeBuilder::Vertex v = shortest_path[i];
-        uint32_t r = v.cell.row;
-        uint32_t c = v.cell.col;
+        auto r = v.cell.row;
+        auto c = v.cell.col;
         src.x = 0;
         src.y = 0;
         src.w = (trail->w);
