@@ -33,3 +33,9 @@ Maze solved: GOAL: 99 <-98 <-97 <-96 <-86 <-85 <-95 <-94 <-84 <-74 <-64 <-54
 Sample graphic output:
 
 ![](https://github.com/liana1215/maze-runner/blob/master/maze/static/www.GIFCreator.me_RPu34o.gif)
+
+
+[piskelapp](http://www.piskelapp.com/) was used to generate the .bmp images.
+
+
+
