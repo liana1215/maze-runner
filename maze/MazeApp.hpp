@@ -19,8 +19,8 @@ namespace MazeApp
     friend class MazeDrawer;
 
     public:
-        MazeBuilder(uint32_t);
-        ~MazeBuilder()=default;
+        explicit MazeBuilder(uint32_t);
+        ~MazeBuilder() noexcept = default;
 
         struct Cell {
             uint32_t row;
@@ -55,8 +55,8 @@ namespace MazeApp
     friend class MazeDrawer;
 
     public:
-        MazeSolver(uint32_t);
-        ~MazeSolver()=default;
+        explicit MazeSolver(uint32_t);
+        ~MazeSolver() noexcept = default;
 
         struct Path {
             stack<MazeBuilder::Vertex> p;
@@ -75,8 +75,8 @@ namespace MazeApp
 
     class MazeDrawer {
     public:
-        MazeDrawer(uint32_t, uint32_t);
-        ~MazeDrawer()=default;
+        explicit MazeDrawer(uint32_t, uint32_t);
+        ~MazeDrawer() noexcept = default;
 
         uint32_t drawMaze(MazeBuilder &, MazeSolver&, vector<MazeBuilder::Vertex>);
 
